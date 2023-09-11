@@ -61,6 +61,15 @@ import BGFilter from '../BGFilter.astro';
 <script>
     import anime from 'animejs';
 
+    let isMobile = false;
+    const mobile = window.matchMedia('(max-width: 1023px)');
+    const mqHandler = (e: MediaQueryListEvent | MediaQueryList) => {
+        isMobile = e.matches;
+    };
+
+    mobile.addEventListener('change', mqHandler);
+    mqHandler(mobile);
+
     const highlightContainer = document.getElementById(
         'highlight',
     ) as HTMLElement;
@@ -99,8 +108,8 @@ import BGFilter from '../BGFilter.astro';
 
     timeline.add({
         targets: greeting,
-        opacity: ['0%', '100%'],
-        translateX: [-200, 0],
+        opacity: [isMobile ? '100%' : '0%', '100%'],
+        translateX: [isMobile ? 0 : -200, 0],
         duration: 1000,
     });
 
