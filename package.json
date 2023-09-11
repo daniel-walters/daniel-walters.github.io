@@ -10,18 +10,13 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/react": "^3.0.0",
     "@astrojs/tailwind": "^5.0.0",
     "@fontsource/concert-one": "^5.0.12",
     "@fontsource/roboto": "^5.0.8",
     "@fontsource/roboto-slab": "^5.0.11",
-    "@types/react": "^18.2.21",
-    "@types/react-dom": "^18.2.7",
     "animejs": "^3.2.1",
     "arrows-svg": "^1.6.0",
     "astro": "^3.0.7",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
     "tailwindcss": "^3.3.3"
   },
   "devDependencies": {
