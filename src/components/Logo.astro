@@ -1,0 +1,25 @@
+---
+import githubLogo from '../images/github.svg';
+import linkedInLogo from '../images/linkedin.svg';
+import { Image } from 'astro:assets';
+
+const logoMap = {
+    Github: githubLogo,
+    LinkedIn: linkedInLogo,
+};
+
+interface Props {
+    logo: keyof typeof logoMap;
+    link: string;
+}
+
+const { logo, link } = Astro.props;
+---
+
+<a href={link} target="_blank" class="hover:scale-110 duration-100">
+    <Image
+        class="w-12 h-12 xl:w-16 xl:h-16"
+        src={logoMap[logo]}
+        alt={`Link to ${logo}`}
+    />
+</a>

@@ -1,0 +1,17 @@
+---
+interface Props {
+    title: string;
+    color?: 'blue' | 'yellow';
+}
+
+const { title, color } = Astro.props;
+
+let bgColor = color === 'blue' ? 'bg-hi' : 'bg-bg';
+let textColor = color === 'blue' ? 'text-text-2' : 'text-text';
+---
+
+<div
+    class=`inline rounded-2xl w-fit ${bgColor} ${textColor} px-4 py-1 text-sm md-text-base xl-text-lg 2xl:text-xl`
+>
+    {title}
+</div>

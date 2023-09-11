@@ -1,0 +1,81 @@
+---
+import Project from '../Project.astro';
+import dotfilesImg from '../../images/dotfiles.png';
+import pokemonImg from '../../images/cssart.png';
+import aocImg from '../../images/aoc.png';
+
+const projects = [
+    {
+        title: 'Pokemon CSS Art',
+        id: 'cssart',
+        description:
+            'Pure CSS/SCSS art of a Christmas themed Pokemon scene. (Intended for desktop only)',
+        github: 'https://github.com/daniel-walters/pika-christmas-css-art',
+        image: pokemonImg,
+        tags: ['CSS', 'SCSS', 'HTML'],
+        website: 'https://pika-christmas-css-art.netlify.app/',
+    },
+    {
+        title: 'Dotfiles',
+        id: 'dotfiles',
+        description:
+            'Check out my dotfiles! I use Neovim as my daily driver which I run in tmux/alacritty.',
+        github: 'https://github.com/daniel-walters/.dotfiles',
+        image: dotfilesImg,
+        tags: ['Lua', 'Vim'],
+    },
+    {
+        title: 'Advent of Code',
+        id: 'aoc',
+        description:
+            "I work through Advent of Code to improve my problem solving skills and pick up a new language. Here's my WIP AOC 2022 solutions which I'm learning Go with.",
+        github: 'https://github.com/daniel-walters/aoc2022go',
+        image: aocImg,
+        tags: ['Go'],
+    },
+];
+---
+
+<section class="min-w-full bg-text pt-12">
+    <div class="lg:pl-28 lg:pr-8 w-full flex flex-col h-full items-center px-8">
+        <div
+            class="lg:w-3/4 overflow-hidden h-full flex flex-col gap-12 lg:pl-8 lg:mb-2 mb-8"
+        >
+            {projects.map((proj) => <Project {...proj} />)}
+        </div>
+    </div>
+</section>
+
+<script>
+    import anime from 'animejs';
+
+    const projIds = ['cssart', 'dotfiles', 'aoc'];
+
+    projIds.forEach((id) => {
+        const proj = document.getElementById(id);
+        const anim = anime({
+            targets: proj,
+            opacity: [0, 1],
+            autoplay: false,
+            easing: 'linear',
+            translateY: [50, 0],
+        });
+
+        const obs = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((e) => {
+                    if (!e.isIntersecting) return;
+
+                    if (anim.completed) {
+                        return false;
+                    }
+
+                    anim.play();
+                });
+            },
+            { threshold: 0.3 },
+        );
+
+        obs.observe(proj!);
+    });
+</script>

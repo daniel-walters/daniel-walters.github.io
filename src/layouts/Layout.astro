@@ -1,0 +1,54 @@
+---
+import '@fontsource/roboto';
+import '@fontsource/roboto-slab';
+import '@fontsource/concert-one';
+import Nav from '../components/Nav.astro';
+
+interface Props {
+    title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="description" content="Astro description" />
+        <meta name="viewport" content="width=device-width" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <meta name="generator" content={Astro.generator} />
+        <title>{title}</title>
+    </head>
+    <Nav />
+    <body class="bg-bg-2">
+        <slot />
+    </body>
+
+    <style is:global>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        h1 {
+            font-family: 'Concert One', sans-serif;
+        }
+
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-family: 'Roboto Slab', serif;
+        }
+
+        p,
+        span,
+        a,
+        div {
+            font-family: 'Roboto', sans-serif;
+        }
+    </style>
+</html>

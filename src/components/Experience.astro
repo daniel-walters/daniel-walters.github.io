@@ -1,0 +1,43 @@
+---
+import Tag from './Tag.astro';
+
+interface Props {
+    id: string;
+    title: string;
+    subtitle: string;
+    start: string;
+    end: string;
+    classnames: string;
+    tags?: string[];
+}
+
+const { id, title, tags = [], subtitle, start, end, classnames } = Astro.props;
+---
+
+<div
+    id={id}
+    class=`flex-col lg:flex-row flex gap-1 lg:gap-4 items-baseline w-full lg:w-fit ${classnames}`
+>
+    <div>
+        <span class="md:text-lg xl:text-xl 2xl:text-2xl w-fit block text-text"
+            >{start} - {end}</span
+        >
+    </div>
+    <div>
+        <h3
+            class="font-semibold md:text-2xl xl:text-3xl 2xl:text-4xl lg:mb-2 w-fit text-text"
+        >
+            {title}
+        </h3>
+        <em
+            ><h4
+                class="font-semibold md:text-xl xl:text-2xl 2xl:text-2xl mb-2 w-fit text-text"
+            >
+                {subtitle}
+            </h4></em
+        >
+        <div class="flex flex-wrap flex-row gap-2 sm:w-96">
+            {tags?.map((tag) => <Tag title={tag} color="blue" />)}
+        </div>
+    </div>
+</div>

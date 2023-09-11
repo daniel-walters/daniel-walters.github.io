@@ -1,0 +1,44 @@
+---
+const sections = ['Home', 'About', 'Projects', 'Contact'];
+---
+
+<nav
+    class="hidden z-10 h-full w-28 fixed left-0 bg-bg-2 lg:flex justify-center items-center border-r border-text"
+>
+    <div class="-rotate-90 flex gap-16 justify-center">
+        {
+            sections.map((section) => (
+                <a
+                    id={section}
+                    class="hover:cursor-pointer lg:text-lg xl:text-xl 2xl:text-2xl hover:scale-110 duration-200 before:content=[''] before:border-2 before:border-hi before:h-0 before:block before:relative before:top-full before:w-0 before:opacity-0 hover:before:opacity-100 before:hover:w-full before:duration-500 text-text"
+                >
+                    {section}
+                </a>
+            ))
+        }
+    </div>
+</nav>
+
+<script>
+    const links = document
+        .getElementsByTagName('nav')[0]
+        .getElementsByTagName('a');
+
+    const numJumps: Record<number, number> = {
+        0: 0,
+        1: 1,
+        2: 2,
+        3: 4,
+    };
+
+    for (let i = 0; i < links.length; i++) {
+        const link = links.item(i);
+
+        link?.addEventListener('click', () => {
+            window.scrollTo({
+                top: window.innerWidth * numJumps[i],
+                behavior: 'smooth',
+            });
+        });
+    }
+</script>

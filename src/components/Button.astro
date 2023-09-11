@@ -1,0 +1,16 @@
+---
+interface Props {
+    link: string;
+    newWindow?: boolean;
+}
+
+const { link, newWindow } = Astro.props;
+---
+
+<a href={link} target={newWindow ? '_blank' : '_self'}>
+    <button
+        class="text-xl md:text-2xl xl:text-3xl 2xl:text-4xl border border-hi rounded-xl py-6 px-8 lg:py-8 lg:px-12 hover:bg-hi hover:text-text-2 duration-500 hover:border-text text-hi bg-bg-2"
+    >
+        <slot />
+    </button>
+</a>

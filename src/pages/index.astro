@@ -1,0 +1,55 @@
+---
+import Layout from '../layouts/Layout.astro';
+import About from '../components/Sections/About.astro';
+import Contact from '../components/Sections/Contact.astro';
+import Landing from '../components/Sections/Landing.astro';
+import Projects from '../components/Sections/Projects.astro';
+import ProjectsTwo from '../components/Sections/ProjectsTwo.astro';
+---
+
+<Layout title="Daniel Walters | Software Engineer">
+    <main>
+        <div class="lg:h-[calc(200vw+100vh)] lg:relative">
+            <div
+                id="horizontal-area-one"
+                class="w-full lg:h-screen lg:flex lg:sticky lg:overflow-hidden lg:top-0"
+            >
+                <Landing />
+                <About />
+                <Projects />
+            </div>
+        </div>
+        <div class="lg:relative lg:h-[calc(100vw+100vh)]">
+            <div
+                id="horizontal-area-two"
+                class="w-full lg:h-screen lg:flex lg:sticky lg:overflow-hidden lg:top-0"
+            >
+                <ProjectsTwo />
+                <Contact />
+            </div>
+        </div>
+    </main>
+</Layout>
+
+<script>
+    const desktop = window.matchMedia('(min-width: 1024px)');
+
+    const scrollEventHandler = () => {
+        const horiz = document.getElementById('horizontal-area-one');
+        const horiz2 = document.getElementById('horizontal-area-two');
+
+        horiz!.scrollLeft = horiz!.offsetTop;
+        horiz2!.scrollLeft = horiz2!.offsetTop;
+    };
+
+    const mqHandler = (e: MediaQueryListEvent | MediaQueryList) => {
+        if (e.matches) {
+            window.addEventListener('scroll', scrollEventHandler);
+        } else {
+            window.removeEventListener('scroll', scrollEventHandler);
+        }
+    };
+
+    desktop.addEventListener('change', mqHandler);
+    mqHandler(desktop);
+</script>

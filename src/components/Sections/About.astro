@@ -1,0 +1,287 @@
+---
+import Experience from '../Experience.astro';
+import BGFilter from '../BGFilter.astro';
+---
+
+<section
+    id="about"
+    class="lg:my-8 min-w-full bg-bg border-y border-text relative"
+>
+    <BGFilter variant="about" />
+    <div class="flex flex-col justify-between h-full absolute">
+        <h2
+            id="first"
+            class="whitespace-nowrap lg:text-7xl xl:text-8xl 2xl:text-9xl font-black relative right-24 w-fit mt-8 text-text lg:block hidden"
+        >
+            FULLSTACK
+        </h2>
+        <h2
+            id="second"
+            class="whitespace-nowrap lg:text-7xl xl:text-8xl 2xl:text-9xl font-black relative w-fit text-text lg:block hidden"
+        >
+            SOFTWARE
+        </h2>
+        <h2
+            id="last"
+            class="whitespace-nowrap lg:text-7xl xl:text-8xl 2xl:text-9xl font-black relative right-48 mb-8 text-text lg:block hidden"
+        >
+            ENGINEER
+        </h2>
+    </div>
+    <div class="lg:pl-40 lg:pr-8 w-full flex flex-col h-full px-8">
+        <h1
+            id="experience"
+            class="text-5xl md:text-6xl lg:text-7xl xl:text-8xl 2xl:text-9xl text-text mt-8 lg:mb-0 mb-8"
+        >
+            EXPERIENCE
+        </h1>
+        <div class="flex flex-col justify-center gap-16 h-full lg:mb-0 mb-8">
+            <Experience
+                id="coderacademy"
+                ,
+                classnames="relative"
+                ,
+                title="Coder Academy"
+                ,
+                subtitle="Diploma of IT"
+                ,
+                start="Mar 2021"
+                ,
+                end="Jan 2022"
+                ,
+                tags={[
+                    'Ruby',
+                    'Rails',
+                    'React',
+                    'JavaScript',
+                    'MongoDB',
+                    'SQL',
+                    'SCSS',
+                ]}
+            />
+            <Experience
+                id="genero"
+                ,
+                classnames="lg:self-end"
+                ,
+                title="Genero"
+                ,
+                subtitle="Junior Software Engineer"
+                ,
+                start="Feb 2022"
+                ,
+                end="May 2023"
+                ,
+                tags={[
+                    'React',
+                    'NextJS',
+                    'JavaScript',
+                    'TypeScript',
+                    'SCSS',
+                    'SQL',
+                    'GraphQL',
+                    'Node',
+                ]}
+            />
+        </div>
+    </div>
+    <div
+        class="hidden lg:block absolute bg-bg border-r border-y rounded-tr-full rounded-br-full border-text h-[calc(100vh_-_4rem)] w-32 -top-px left-full"
+    >
+    </div>
+</section>
+
+<style is:global>
+    svg {
+        pointer-events: none;
+        opacity: 0;
+    }
+
+    .exp-arrow__1__path {
+        stroke: #474647;
+        fill: transparent;
+        stroke-width: 4px;
+    }
+
+    .exp-arrow__1__head line {
+        stroke: black;
+        stroke-width: 4px;
+    }
+</style>
+
+<script>
+    import anime from 'animejs';
+    import arrowCreate, { DIRECTION, HEAD } from 'arrows-svg';
+
+    const first = document.getElementById('first');
+    const second = document.getElementById('second');
+    const last = document.getElementById('last');
+    const container = document.getElementById('horizontal-area-one');
+    const animSpeedFactor = 0.6;
+    const animSpeedFactor2 = 0.3;
+    const animSpeedFactor3 = 0.2;
+
+    const arrow = arrowCreate({
+        className: 'exp-arrow__1',
+        from: {
+            node: document.getElementById('coderacademy')!,
+            direction: DIRECTION.BOTTOM,
+            translation: [0.1, 0.5],
+        },
+        to: {
+            node: document.getElementById('genero')!,
+            direction: DIRECTION.LEFT,
+        },
+        head: {
+            func: HEAD.THIN,
+            size: 30,
+        },
+    });
+
+    const desktopLg = window.matchMedia('(min-width: 1280px)');
+    let hasArrow = false;
+
+    const mqHandler = (e: MediaQueryListEvent | MediaQueryList) => {
+        if (e.matches) {
+            document.body.appendChild(arrow.node);
+            hasArrow = true;
+        } else {
+            const arrowElem =
+                document.body.getElementsByClassName('exp-arrow__1')?.[0];
+            if (arrowElem) {
+                document.body.removeChild(arrowElem);
+                hasArrow = false;
+            }
+        }
+    };
+
+    desktopLg.addEventListener('change', mqHandler);
+    mqHandler(desktopLg);
+
+    anime({
+        targets: [first, last],
+        opacity: ['0%', '100%'],
+        duration: 1000,
+        translateX: [200, 0],
+        easing: 'linear',
+    });
+
+    function handleScrollFirst() {
+        first!.style.transform = `translateX(-${
+            container!.scrollLeft * animSpeedFactor
+        }px)`;
+    }
+
+    function handleScrollSecond() {
+        second!.style.transform = `translateX(-${
+            container!.scrollLeft * animSpeedFactor3
+        }px)`;
+    }
+
+    function handleScrollLast() {
+        last!.style.transform = `translateX(-${
+            container!.scrollLeft * animSpeedFactor2
+        }px)`;
+    }
+
+    function createObserver(handler: () => void) {
+        return new IntersectionObserver(
+            (entries) => {
+                entries.forEach((e) => {
+                    if (e.isIntersecting) {
+                        window.addEventListener('scroll', handler);
+                    } else {
+                        window.removeEventListener('scroll', handler);
+                    }
+                });
+            },
+            { threshold: 0.01 },
+        );
+    }
+
+    createObserver(handleScrollFirst).observe(first!);
+    createObserver(handleScrollLast).observe(last!);
+    createObserver(handleScrollSecond).observe(second!);
+
+    let svgArrow = document.getElementsByClassName(
+        'exp-arrow__1',
+    )[0] as HTMLElement;
+
+    const experience = document.getElementById('experience');
+    const about = document.getElementById('about');
+
+    const titleObs = new IntersectionObserver(
+        (entries) => {
+            entries.forEach((e) => {
+                experience!.style.opacity = String(e.intersectionRatio);
+            });
+        },
+        {
+            threshold: [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1],
+        },
+    );
+
+    const heroFadeOutObs = new IntersectionObserver(
+        (entries) => {
+            entries.forEach((e) => {
+                let opacity = (e.intersectionRatio - 0.2) / 0.8;
+
+                first!.style.opacity = String(1 - opacity);
+                second!.style.opacity = String(1 - opacity);
+                last!.style.opacity = String(1 - opacity);
+            });
+        },
+        { threshold: [0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1] },
+    );
+
+    const timelineAnim = anime.timeline({ autoplay: false });
+
+    timelineAnim.add({
+        targets: document.getElementById('coderacademy'),
+        duration: 1000,
+        easing: 'linear',
+        opacity: [0, 1],
+        translateX: hasArrow ? 0 : [100, 0],
+    });
+
+    if (hasArrow) {
+        timelineAnim.add({
+            targets: svgArrow,
+            duration: 1,
+            easing: 'linear',
+            opacity: [0, 1],
+        });
+
+        timelineAnim.add({
+            targets: svgArrow,
+            duration: 4000,
+            easing: 'linear',
+            width: ['0px', '100%'],
+        });
+    }
+
+    timelineAnim.add(
+        {
+            targets: document.getElementById('genero'),
+            duration: 1000,
+            easing: 'linear',
+            opacity: [0, 1],
+            translateX: hasArrow ? 0 : [-100, 0],
+        },
+        hasArrow ? '-= 2500' : '1000',
+    );
+
+    const timelineObs = new IntersectionObserver(
+        (entries) => {
+            entries.forEach((e) => {
+                if (!e.isIntersecting || timelineAnim.completed) return;
+                timelineAnim.play();
+            });
+        },
+        { threshold: 0.7 },
+    );
+
+    titleObs.observe(experience!);
+    heroFadeOutObs.observe(about!);
+    timelineObs.observe(about!);
+</script>

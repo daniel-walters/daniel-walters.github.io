@@ -1,0 +1,33 @@
+---
+interface Props {
+    variant: 'landing' | 'about' | 'contact';
+}
+
+const { variant } = Astro.props;
+
+let numDivs = 0;
+let classes = '';
+
+switch (variant) {
+    case 'landing':
+        numDivs = 4;
+        classes = 'grid-cols-[10%_20%_30%_30%] h-[calc(100%_-_4rem)]';
+        break;
+    case 'about':
+        numDivs = 3;
+        classes = 'grid-cols-[26%_24%_20%] h-full';
+    case 'contact':
+        numDivs = 3;
+        classes = 'grid-cols-[25%_34%_30%] h-full';
+}
+---
+
+<div
+    class=`hidden absolute right-0 lg:grid pointer-events-none bg-transparent w-full ${classes}`
+>
+    {
+        new Array(numDivs).fill(0).map((_) => {
+            return <div class="border-r border-[#47464750]" />;
+        })
+    }
+</div>

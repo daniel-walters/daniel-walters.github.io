@@ -1,0 +1,143 @@
+---
+import BGFilter from '../BGFilter.astro';
+---
+
+<section
+    class="min-w-full bg-bg flex lg:my-8 lg:border-y border-text h-screen lg:h-auto"
+>
+    <BGFilter variant="landing" />
+    <div class="ml-8 mr-8 lg:mr-0 lg:ml-64 mt-auto mb-auto">
+        <h1
+            id="greeting"
+            class="w-1/2 lg:w-auto text-5xl text-5xl xl:text-6xl 2xl:text-7xl font-bold mb-8 text-text"
+        >
+            HELLO, MY NAME IS
+        </h1>
+        <div
+            id="highlight"
+            class="lg:flex items-center lg:relative lg:right-24 w-fit"
+        >
+            <div
+                id="highlightLeft"
+                class="hidden lg:block h-[4.5rem] w-[4.5rem] xl:h-24 xl:w-24 2xl:h-32 2xl:w-32 relative left-1"
+            >
+            </div>
+            <h1
+                id="name"
+                class="lg:h-full text-7xl xl:text-8xl 2xl:text-9xl text-text-2"
+            >
+                DANIEL WALTERS
+            </h1>
+            <div
+                id="highlightRight"
+                class="hidden lg:block h-[4.5rem] w-[4.5rem] xl:h-24 lg:w-24 2xl:h-32 2xl:w-32 relative right-1"
+            >
+            </div>
+        </div>
+        <h1 class="lg:hidden text-5xl mt-8 text-text">
+            Fullstack Software Engineer
+        </h1>
+    </div>
+</section>
+
+<style>
+    #highlightLeft {
+        aspect-ratio: 0.5 / 1;
+        left: 1px;
+        top: 0;
+        clip-path: polygon(50% 0, 100% 0%, 100% 100%, 0 100%, 0 100%);
+    }
+
+    #highlightRight {
+        aspect-ratio: 0.5 / 1;
+        right: 1px;
+        top: 0;
+        clip-path: polygon(100% 0, 100% 0%, 50% 100%, 0 100%, 0 0);
+    }
+</style>
+
+<script>
+    import anime from 'animejs';
+
+    const highlightContainer = document.getElementById(
+        'highlight',
+    ) as HTMLElement;
+
+    const nameFadeObs = new IntersectionObserver(
+        (entries) => {
+            entries.forEach((e) => {
+                highlightContainer.style.opacity = String(e.intersectionRatio);
+            });
+        },
+        { threshold: [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1] },
+    );
+
+    nameFadeObs.observe(highlightContainer);
+
+    const highlightPercents = {
+        before: 0,
+        content: 0,
+        after: 0,
+    };
+
+    const timeline = anime.timeline({ easing: 'linear' });
+
+    const name = document.getElementById('name') as HTMLElement;
+    const greeting = document.getElementById('greeting') as HTMLElement;
+    const highlightLeft = document.getElementById(
+        'highlightLeft',
+    ) as HTMLElement;
+    const highlightRight = document.getElementById(
+        'highlightRight',
+    ) as HTMLElement;
+
+    function updateGradient(element: HTMLElement, percent: number) {
+        element.style.background = `linear-gradient(90deg, #1480ae 0%, #1480ae ${percent}%, transparent 0%, transparent 100%)`;
+    }
+
+    timeline.add({
+        targets: greeting,
+        opacity: ['0%', '100%'],
+        translateX: [-200, 0],
+        duration: 1000,
+    });
+
+    timeline.add(
+        {
+            targets: name,
+            opacity: ['0%', '100%'],
+            translateX: [200, 0],
+            duration: 1000,
+        },
+        '-1',
+    );
+
+    timeline.add({
+        targets: highlightPercents,
+        before: 100,
+        duration: 150,
+        update: () => {
+            updateGradient(highlightLeft, highlightPercents.before);
+        },
+    });
+
+    timeline.add({
+        targets: highlightPercents,
+        content: 100,
+        duration: 1000,
+        update: () => {
+            updateGradient(name, highlightPercents.content);
+        },
+    });
+
+    timeline.add({
+        targets: highlightPercents,
+        after: 100,
+        duration: 150,
+        update: () => {
+            updateGradient(highlightRight, highlightPercents.after);
+        },
+    });
+
+    timeline.play();
+</script>

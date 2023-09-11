@@ -1,0 +1,115 @@
+---
+import Button from '../Button.astro';
+import Logo from '../Logo.astro';
+import BGFilter from '../BGFilter.astro';
+---
+
+<section
+    id="contact"
+    class="lg:my-8 border-y border-text min-w-full bg-bg relative"
+>
+    <BGFilter variant="contact" />
+    <div class="pt-16 lg:pl-48 w-full flex flex-col h-full px-8 lg:pr-0">
+        <h1
+            id="contact-title"
+            class="text-5xl md:text-6xl lg:text-7xl xl:text-8xl 2xl:text-9xl text-text mb-4 lg:mb-0"
+        >
+            CONTACT
+        </h1>
+        <div
+            class="lg:flex-row flex-col flex w-full lg:pr-16 lg:my-auto items-center"
+        >
+            <div
+                id="contact-section"
+                class="flex flex-col lg:w-1/2 h-full items-center gap-2 lg:gap-6"
+            >
+                <h2
+                    class="text-xl md:text-3xl xl:text-4xl 2xl:text-5xl text-text"
+                >
+                    Get in touch
+                </h2>
+                <div class="flex gap-8">
+                    <Logo
+                        logo="Github"
+                        link="https://github.com/daniel-walters/"
+                    />
+                    <Logo
+                        logo="LinkedIn"
+                        link="https://www.linkedin.com/in/daniel-walters-dev/"
+                    />
+                </div>
+                <h3
+                    class="text-lg md:text-2xl xl:text-3xl 2xl:text-4xl text-text"
+                >
+                    or
+                </h3>
+                <Button link="mailto:waltersdaniel96@gmail.com">
+                    Email me
+                </Button>
+            </div>
+            <div
+                id="resume-section"
+                class="flex flex-col lg:w-1/2 h-full items-center gap-2 lg:gap-6 lg:justify-end my-8 lg:my-0"
+            >
+                <h3
+                    class="text-text text-xl md:text-3xl xl:text-4xl 2xl:text-5xl lg:mb-16"
+                >
+                    Want to know more?
+                </h3>
+                <Button link="/resume.pdf" newWindow>View my resume</Button>
+            </div>
+        </div>
+    </div>
+    <div
+        class="hidden lg:block absolute bg-bg border-l border-y rounded-tl-full rounded-bl-full border-text h-[calc(100vh_-_4rem)] w-32 -top-px right-full"
+    >
+    </div>
+</section>
+
+<script>
+    import anime from 'animejs';
+
+    const title = document.getElementById('contact-title');
+    const animationSectionIds = ['contact-section', 'resume-section'];
+
+    const titleObs = new IntersectionObserver(
+        (entries) => {
+            entries.forEach((e) => {
+                title!.style.opacity = String(e.intersectionRatio);
+            });
+        },
+        {
+            threshold: [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1],
+        },
+    );
+
+    titleObs.observe(title!);
+
+    animationSectionIds.forEach((id) => {
+        const section = document.getElementById(id);
+        const anim = anime({
+            targets: section,
+            opacity: [0, 1],
+            autoplay: false,
+            easing: 'linear',
+            translateY: [50, 0],
+        });
+
+        const obs = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((e) => {
+                    if (!e.isIntersecting) return;
+
+                    if (anim.completed) {
+                        return false;
+                    }
+
+                    anim.play();
+                });
+            },
+            { threshold: 0.5 },
+        );
+
+        obs.observe(section!);
+    });
+</script>

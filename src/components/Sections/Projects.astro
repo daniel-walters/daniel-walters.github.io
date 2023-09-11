@@ -1,0 +1,104 @@
+---
+import Project from '../Project.astro';
+import bubbleImg from '../../images/bubble.png';
+import chessImg from '../../images/chessviewer.png';
+
+const projects = [
+    {
+        title: 'ChessViewer',
+        id: 'chessviewer',
+        description:
+            'A custom built PGN (Chess notation) parser with a visual representation of the moves on a chess board. Edit the PGN with valid notation and watch the game play out!',
+        github: 'https://github.com/daniel-walters/chessviewer',
+        image: chessImg,
+        tags: ['React', 'NextJS', 'JavaScript', 'TypeScript', 'CSS', 'SCSS'],
+        website: 'https://chess-viewer.netlify.app/',
+    },
+    {
+        title: 'Bubble sort visualiser',
+        id: 'bubble',
+        description:
+            'A project I started to learn about generator functions, this visual representation of the bubble sort algorithm with follow-along code uses generators to inspect the state of an array at select times during each iteration',
+        github: 'https://github.com/daniel-walters/dsa-visuals',
+        image: bubbleImg,
+        tags: ['React', 'NextJS', 'JavaScript', 'TypeScript', 'CSS', 'SCSS'],
+        website: 'https://dsa-visuals.vercel.app/',
+    },
+];
+---
+
+<section id="projects" class="min-w-full bg-text border-l border-text">
+    <div
+        class="pt-8 lg:pt-24 lg:pl-28 w-full flex flex-col h-full lg:items-center px-8 lg:pr-0"
+    >
+        <h1
+            id="projects-title"
+            class="lg:text-center text-5xl md:text-6xl lg:text-7xl xl:text-8xl 2xl:text-9xl mb-8 lg:ml-8 lg:mr-8 text-bg-2"
+        >
+            PROJECTS
+        </h1>
+        <div
+            class="lg:w-3/4 lg:pl-8 overflow-hidden h-full flex flex-col gap-12 justify-end lg:mr-8"
+        >
+            {projects.map((proj) => <Project {...proj} />)}
+        </div>
+    </div>
+</section>
+
+<script>
+    import anime from 'animejs';
+
+    const title = document.getElementById('projects-title');
+    const projIds = ['chessviewer', 'bubble'];
+
+    let isMobile = false;
+    const mobile = window.matchMedia('(max-width: 1023px)');
+    const mqHandler = (e: MediaQueryListEvent | MediaQueryList) => {
+        isMobile = e.matches;
+    };
+
+    mobile.addEventListener('change', mqHandler);
+    mqHandler(mobile);
+
+    const titleObs = new IntersectionObserver(
+        (entries) => {
+            entries.forEach((e) => {
+                title!.style.opacity = String(e.intersectionRatio);
+            });
+        },
+        {
+            threshold: [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1],
+        },
+    );
+
+    titleObs.observe(title!);
+
+    projIds.forEach((id) => {
+        const proj = document.getElementById(id);
+        const anim = anime({
+            targets: proj,
+            opacity: [0, 1],
+            autoplay: false,
+            easing: 'linear',
+            translateX: !isMobile ? [-50, 0] : [0, 0],
+            translateY: isMobile ? [50, 0] : [0, 0],
+        });
+
+        const obs = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((e) => {
+                    if (!e.isIntersecting) return;
+
+                    if (anim.completed) {
+                        return false;
+                    }
+
+                    anim.play();
+                });
+            },
+            { threshold: 0.3 },
+        );
+
+        obs.observe(proj!);
+    });
+</script>
