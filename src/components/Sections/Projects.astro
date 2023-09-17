@@ -2,6 +2,7 @@
 import Project from '../Project.astro';
 import bubbleImg from '../../images/bubble.png';
 import chessImg from '../../images/chessviewer.png';
+import Link from '../Link.astro';
 
 const projects = [
     {
@@ -37,6 +38,16 @@ const projects = [
         >
             PROJECTS
         </h1>
+        <p
+            class="mb-8 lg:w-3/4 lg:text-center text-bg-2 text-base xl:text-lg 2xl:text-2xl"
+        >
+            Whether I'm just learning a new language, taking code challenges or
+            working on a project, almost everything I do ends up on my <Link
+                href="https://www.github.com/daniel-walters"
+            >
+                Github
+            </Link>. Here are some I've featured:
+        </p>
         <div
             class="lg:w-3/4 lg:pl-8 overflow-hidden h-full flex flex-col gap-12 justify-end lg:mr-8"
         >
